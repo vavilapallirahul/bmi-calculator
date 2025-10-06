@@ -38,5 +38,5 @@ jobs:
 
       - name: Build and push Docker image
         run: |
-          docker build -t ${{ secrets.ACR_LOGIN_SERVER }}/bmi-frontend:v${{ github.run_number }} ./frontend
+          docker build -t ${{ secrets.ACR_LOGIN_SERVER }}/bmi-frontend:v${{ github.run_number }} frontend
           docker push ${{ secrets.ACR_LOGIN_SERVER }}/bmi-frontend:v${{ github.run_number }}
