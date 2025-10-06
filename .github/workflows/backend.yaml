@@ -1,0 +1,45 @@
+name: Backend CI/CD
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'backend-gin/**'        # only trigger when files in backend-gin/ change
+      - '.github/workflows/backend.yml'   # (optional) trigger if this workflow itself changes
+
+  pull_request:
+    branches:
+      - main
+    paths:
+      - 'backend-gin/**'
+      - '.github/workflows/backend.yml'
+
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: '1.22'
+
+      - name: Build Go backend
+        working-directory: backend-gin
+        run: |
+          go mod tidy
+          go build -o app .
+
+      - name: Login to Azure Container Registry
+        uses: azure/docker-login@v1
+        with:
+          login-server: ${{ secrets.ACR_LOGIN_SERVER }}
+          username: ${{ secrets.ACR_USERNAME }}
+          password: ${{ secrets.ACR_PASSWORD }}
+
+      - name: Build and push Docker image
+        run: |
