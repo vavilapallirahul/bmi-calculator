@@ -4,9 +4,16 @@ on:
   push:
     branches:
       - main
+    paths:
+      - 'frontend/**'                    # only trigger when frontend files change
+      - '.github/workflows/frontend.yml' # also trigger if this workflow changes
+
   pull_request:
     branches:
       - main
+    paths:
+      - 'frontend/**'
+      - '.github/workflows/frontend.yml'
 
 jobs:
   build-and-push:
