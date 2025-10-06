@@ -43,3 +43,5 @@ jobs:
 
       - name: Build and push Docker image
         run: |
+          docker build -t ${{ secrets.ACR_LOGIN_SERVER }}/bmi-backend:v${{ github.run_number }} backend-gin
+          docker push ${{ secrets.ACR_LOGIN_SERVER }}/bmi-backend:v${{ github.run_number }}
